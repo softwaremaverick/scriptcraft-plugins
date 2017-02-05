@@ -37,6 +37,8 @@ function railUp(length, baseblock) {
 }
 
 function railForward(length, baseblock) {
+   var drone = new Drone(self);
+
    box(baseblock).fwd().times(length);
    box(blocks.powered_rail, 1, 1, length);
 
