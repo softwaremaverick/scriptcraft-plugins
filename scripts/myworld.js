@@ -21,15 +21,13 @@ function torchwall(length, depth, baseblock) {
 var torchInterval = 4;
 
 function railUp(length, baseblock) {
-   var drone = new Drone(self);
-
-   box(baseblock).fwd().up().times(length);
+   fwd().box(baseblock).up().times(length);
    box(blocks.powered_rail).fwd().up().times(length+1);
 
    var drone = new Drone(self);
    drone.right().box(blocks.torch_redstone);
 
-   var times = length / torchInterval;
+   var times = parseInt(length / torchInterval);
 
    for (i=0; i < times; i++) {
       drone.up(torchInterval).fwd(torchInterval).down().box(baseblock).up().box(blocks.torch_redstone);
@@ -37,15 +35,13 @@ function railUp(length, baseblock) {
 }
 
 function railForward(length, baseblock) {
-   var drone = new Drone(self);
-
-   box(baseblock).fwd().times(length);
+   down().box(baseblock, 1, 1, length);
    box(blocks.powered_rail, 1, 1, length);
 
    var drone = new Drone(self);
    drone.right().box(blocks.torch_redstone);
 
-   var times = length / torchInterval;
+   var times = parseInt(length / torchInterval);
 
    for (i=0; i < times; i++) {
       drone.fwd(torchInterval).box(blocks.torch_redstone);
