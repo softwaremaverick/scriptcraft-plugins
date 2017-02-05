@@ -46,6 +46,8 @@ function railForward(length, baseblock) {
    for (i=0; i < times; i++) {
       drone.fwd(torchInterval).box(blocks.torch_redstone);
    }
+
+   return fwd(length);
 }
 
 exports.railride = railride;
