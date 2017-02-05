@@ -18,7 +18,7 @@ function torchwall(length, depth, baseblock) {
    box0(baseblock, length, 1, depth).up().box0(blocks.torch, length, 1, depth);
 }
 
-var torchInterval = 4;
+var torchInterval = 1;
 
 function railUp(length, baseblock) {
    fwd().box(baseblock).up().times(length);
