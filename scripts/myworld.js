@@ -50,6 +50,63 @@ function railForward(length, baseblock) {
    return fwd(length);
 }
 
+
+function Rails() {
+   this.drone = new Drone(self);
+   this.baseblock = blocks.wool.white;
+}
+
+Rails.prototype.fwd = function(length) {
+   this.drone.down().box(this.baseblock, 1, 1, length);
+   this.drone.up().box(blocks.powered_rail, 1, 1, length);
+
+   this.drone.right().box(blocks.torch_redstone);
+
+   var times = parseInt(length / torchInterval) - 1;
+
+   this.drone.down().box(this.baseblock, 1, 1, length);
+   this.drone.up();
+
+   for (i=0; i < times; i++) {
+      this.drone.fwd(torchInterval).box(blocks.torch_redstone);
+   }
+
+   this.drone.fwd().left();
+   return this;
+}
+
+Rails.prototype.up = function(length) {
+
+   this.drone.chkpt('start').down();
+
+   for (i=0; i < length; i++) {
+      this.drone.box(this.baseblock).fwd().up();
+   }
+
+   this.drone.move('start');
+
+   for (i=0; i < length; i++) {
+      this.drone.box(blocks.powered_rail).fwd().up();
+   }
+
+   this.drone.move('start').right().down().box(this.baseblock).up().box(blocks.torch_redstone);
+
+   var times = parseInt(length / torchInterval);
+
+   for (i=0; i < times; i++) {
+      this.drone.up(torchInterval).fwd(torchInterval).down().box(this.baseblock).up().box(blocks.torch_redstone);
+   }
+
+   this.drone.left();
+
+   return this;
+}
+
+function rails() {
+   return new Rails();
+}
+
+exports.rails = rails;
 exports.railride = railride;
 exports.torchwall = torchwall;
 exports.railUp = railUp;
