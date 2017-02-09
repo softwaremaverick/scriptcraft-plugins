@@ -102,6 +102,18 @@ Rails.prototype.up = function(length) {
    return this;
 }
 
+Rails.prototype.turnLeft = function(length) {
+   this.drone.turn(3).down().box(this.baseblock).up().box(blocks.rail).fwd();
+
+   return this;
+}
+
+Rails.prototype.turnRight = function(length) {
+   this.drone.turn().down().box(this.baseblock).up().box(blocks.rail).fwd();
+
+   return this;
+}
+
 function rails() {
    return new Rails();
 }
