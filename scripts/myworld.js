@@ -102,6 +102,33 @@ Rails.prototype.up = function(length) {
    return this;
 }
 
+Rails.prototype.down = function(length) {
+
+   this.drone.chkpt('start').down(2);
+
+   for (i=0; i < length; i++) {
+      this.drone.box(this.baseblock).fwd().down();
+   }
+
+   this.drone.move('start').down();
+
+   for (i=0; i < length; i++) {
+      this.drone.box(blocks.powered_rail).fwd().down();
+   }
+
+   this.drone.move('start').down(2).right().box(this.baseblock).up().box(blocks.torch_redstone);
+
+   var times = parseInt(length / torchInterval) - 1;
+
+   for (i=0; i < times; i++) {
+      this.drone.down(torchInterval).fwd(torchInterval).down().box(this.baseblock).up().box(blocks.torch_redstone);
+   }
+
+   this.drone.left();
+
+   return this;
+}
+
 Rails.prototype.turnLeft = function(length) {
    this.drone.turn(3).down().box(this.baseblock).up().box(blocks.rail).fwd();
 
