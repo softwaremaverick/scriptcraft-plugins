@@ -75,57 +75,77 @@ Rails.prototype.fwd = function(length) {
    return this;
 }
 
-Rails.prototype.up = function(length) {
+function railUpOrDown(railObject, isUp, length) {
+   railObject.drone.chkpt('start');
 
-   this.drone.chkpt('start').down();
-
-   for (i=0; i < length; i++) {
-      this.drone.box(this.baseblock).fwd().up();
+   if (isUp) {
+       railObject.drone.down();
+   } else {
+       railObject.drone.down(2);
    }
 
-   this.drone.move('start');
-
    for (i=0; i < length; i++) {
-      this.drone.box(blocks.powered_rail).fwd().up();
+      railObject.drone.box(railObject.baseblock).fwd();
+
+      if (isUp) {
+          railObject.drone.up();
+      } else {
+          railObject.drone.down();
+      }
    }
 
-   this.drone.move('start').right().down().box(this.baseblock).up().box(blocks.torch_redstone);
+   railObject.drone.move('start');
+
+   if (!isUp) {
+       railObject.drone.down();
+   }
+
+   for (i=0; i < length; i++) {
+      railObject.drone.box(blocks.powered_rail).fwd();
+
+      if (isUp) {
+          railObject.drone.up();
+      } else {
+          railObject.drone.down();
+      }
+   }
+
+   railObject.drone.move('start');
+
+   if (isUp) {
+      railObject.drone.down();
+   } else {
+      railObject.drone.down(2);
+   }
+
+   railObject.drone.right().box(railObject.baseblock).up().box(blocks.torch_redstone);
 
    var times = parseInt(length / torchInterval);
 
-   for (i=0; i < times; i++) {
-      this.drone.up(torchInterval).fwd(torchInterval).down().box(this.baseblock).up().box(blocks.torch_redstone);
+   if (!isUp) {
+	   times--;
    }
 
-   this.drone.left();
+   for (i=0; i < times; i++) {
+      if (isUp) {
+          railObject.drone.up(torchInterval);
+      } else {
+          railObject.drone.down(torchInterval);
+      }
 
+      railObject.drone.fwd(torchInterval).down().box(railObject.baseblock).up().box(blocks.torch_redstone);
+   }
+
+   railObject.drone.left();
+}
+
+Rails.prototype.up = function(length) {
+   railUpOrDown(this, true, length);
    return this;
 }
 
 Rails.prototype.down = function(length) {
-
-   this.drone.chkpt('start').down(2);
-
-   for (i=0; i < length; i++) {
-      this.drone.box(this.baseblock).fwd().down();
-   }
-
-   this.drone.move('start').down();
-
-   for (i=0; i < length; i++) {
-      this.drone.box(blocks.powered_rail).fwd().down();
-   }
-
-   this.drone.move('start').down(2).right().box(this.baseblock).up().box(blocks.torch_redstone);
-
-   var times = parseInt(length / torchInterval) - 1;
-
-   for (i=0; i < times; i++) {
-      this.drone.down(torchInterval).fwd(torchInterval).down().box(this.baseblock).up().box(blocks.torch_redstone);
-   }
-
-   this.drone.left();
-
+   railUpOrDown(this, false, length);
    return this;
 }
 
