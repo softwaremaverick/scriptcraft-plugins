@@ -56,7 +56,11 @@ function Rails() {
    this.baseblock = blocks.wool.white;
 }
 
-Rails.prototype.fwd = function(length) {
+Rails.prototype.fwd = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
    this.drone.down().box(this.baseblock, 1, 1, length);
    this.drone.up().box(blocks.powered_rail, 1, 1, length);
 
@@ -139,12 +143,20 @@ function railUpOrDown(railObject, isUp, length) {
    railObject.drone.left();
 }
 
-Rails.prototype.up = function(length) {
+Rails.prototype.up = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
    railUpOrDown(this, true, length);
    return this;
 }
 
-Rails.prototype.down = function(length) {
+Rails.prototype.down = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
    railUpOrDown(this, false, length);
    return this;
 }
