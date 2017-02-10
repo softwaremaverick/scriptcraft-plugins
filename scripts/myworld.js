@@ -54,7 +54,7 @@ function railForward(length, baseblock) {
 
 function Rails() {
    this.drone = new Drone(self);
-   this.baseblock = blocks.wool.white;
+   this.baseblock = blocks.slab.upper.stonebrick;
    this.headroom = true;
 }
 
