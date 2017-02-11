@@ -21,37 +21,6 @@ function torchwall(length, depth, baseblock) {
 var torchInterval = 1;
 var headroomHeight = 4;
 
-function railUp(length, baseblock) {
-   fwd().box(baseblock).up().times(length);
-   box(blocks.powered_rail).fwd().up().times(length+1);
-
-   var drone = new Drone(self);
-   drone.right().box(blocks.torch_redstone);
-
-   var times = parseInt(length / torchInterval);
-
-   for (i=0; i < times; i++) {
-      drone.up(torchInterval).fwd(torchInterval).down().box(baseblock).up().box(blocks.torch_redstone);
-   }
-}
-
-function railForward(length, baseblock) {
-   down().box(baseblock, 1, 1, length);
-   box(blocks.powered_rail, 1, 1, length);
-
-   var drone = new Drone(self);
-   drone.right().box(blocks.torch_redstone);
-
-   var times = parseInt(length / torchInterval);
-
-   for (i=0; i < times; i++) {
-      drone.fwd(torchInterval).box(blocks.torch_redstone);
-   }
-
-   return fwd(length);
-}
-
-
 function Rails() {
    this.drone = new Drone(self);
    this.baseblock = blocks.slab.upper.stonebrick;
@@ -173,14 +142,30 @@ Rails.prototype.down = function(length, baseblock) {
    return this;
 }
 
-Rails.prototype.turnLeft = function(length) {
-   this.drone.turn(3).down().box(this.baseblock).up().box(blocks.rail).fwd();
+Rails.prototype.left = function(length) {
+   if (this.headroom) {
+      this.drone.box(blocks.air, 1, headroomHeight, length);
+   }
+
+   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn(3).fwd();
+
+   if (length) {
+      this.fwd(length);
+   }
 
    return this;
 }
 
-Rails.prototype.turnRight = function(length) {
-   this.drone.turn().down().box(this.baseblock).up().box(blocks.rail).fwd();
+Rails.prototype.right = function(length) {
+   if (this.headroom) {
+      this.drone.box(blocks.air, 1, headroomHeight, length);
+   }
+
+   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn().fwd();
+
+   if (length) {
+      this.fwd(length);
+   }
 
    return this;
 }
@@ -192,5 +177,3 @@ function rails() {
 exports.rails = rails;
 exports.railride = railride;
 exports.torchwall = torchwall;
-exports.railUp = railUp;
-exports.railForward = railForward;
