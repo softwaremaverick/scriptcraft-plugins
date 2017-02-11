@@ -18,13 +18,12 @@ function torchwall(length, depth, baseblock) {
    box0(baseblock, length, 1, depth).up().box0(blocks.torch, length, 1, depth);
 }
 
-var torchInterval = 1;
-var headroomHeight = 4;
+var headroomHeight = 3;
 
 function Rails() {
    this.drone = new Drone(self);
    this.baseblock = blocks.slab.upper.stonebrick;
-   this.headroom = true;
+   this.headroomHeight = headroomHeight;
 }
 
 Rails.prototype.fwd = function(length, baseblock) {
@@ -32,96 +31,49 @@ Rails.prototype.fwd = function(length, baseblock) {
       this.baseblock = baseblock;
    }
 
-   this.drone.down();
-
-   if (this.headroom) {
+   if (this.headroomHeight) {
       this.drone.box(blocks.air, 1, headroomHeight, length);
    }
 
-   this.drone.box(this.baseblock, 1, 1, length);
+   this.drone.down().box(this.baseblock, 2, 1, length);
    this.drone.up().box(blocks.powered_rail, 1, 1, length);
+   this.drone.right().box(blocks.torch_redstone, 1, 1, length);
 
-   this.drone.right().box(blocks.torch_redstone);
-
-   var times = parseInt(length / torchInterval) - 1;
-
-   this.drone.down().box(this.baseblock, 1, 1, length);
-   this.drone.up();
-
-   for (i=0; i < times; i++) {
-      this.drone.fwd(torchInterval).box(blocks.torch_redstone);
-   }
-
-   this.drone.fwd().left();
+   this.drone.fwd(length).left();
    return this;
 }
 
 function railUpOrDown(railObject, isUp, length) {
-   railObject.drone.chkpt('start');
-
    if (isUp) {
-       railObject.drone.down();
+       railObject.drone.up();
    } else {
-       railObject.drone.down(2);
+       railObject.drone.down();
    }
 
    for (i=0; i < length; i++) {
-      if (railObject.headroom) {
+      if (railObject.headroomHeight) {
 		  railObject.drone.box(blocks.air, 1, headroomHeight);
 	  }
 
-	  railObject.drone.box(railObject.baseblock).fwd();
+	  railObject.drone.down().box(railObject.baseblock, 2);
+	  railObject.drone.up().box(blocks.powered_rail);
+	  railObject.drone.right().box(blocks.torch_redstone);
 
-      if (isUp) {
+      railObject.drone.left().fwd();
+
+	  if (isUp) {
           railObject.drone.up();
       } else {
           railObject.drone.down();
       }
    }
 
-   railObject.drone.move('start');
-
-   if (!isUp) {
-       railObject.drone.down();
-   }
-
-   for (i=0; i < length; i++) {
-      railObject.drone.box(blocks.powered_rail).fwd();
-
-      if (isUp) {
-          railObject.drone.up();
-      } else {
-          railObject.drone.down();
-      }
-   }
-
-   railObject.drone.move('start');
-
+   // Gone up/down too far
    if (isUp) {
       railObject.drone.down();
    } else {
-      railObject.drone.down(2);
+      railObject.drone.up();
    }
-
-   railObject.drone.right().box(railObject.baseblock).up().box(blocks.torch_redstone);
-
-   var times = parseInt(length / torchInterval);
-
-   if (!isUp) {
-	   times--;
-   }
-
-   for (i=0; i < times; i++) {
-      if (isUp) {
-          railObject.drone.up(torchInterval);
-      } else {
-          railObject.drone.down(torchInterval);
-      }
-
-      railObject.drone.fwd(torchInterval).down().box(railObject.baseblock).up().box(blocks.torch_redstone);
-   }
-
-   railObject.drone.left();
 }
 
 Rails.prototype.up = function(length, baseblock) {
@@ -143,7 +95,7 @@ Rails.prototype.down = function(length, baseblock) {
 }
 
 Rails.prototype.left = function(length) {
-   if (this.headroom) {
+   if (this.headroomHeight) {
       this.drone.box(blocks.air, 1, headroomHeight, length);
    }
 
@@ -157,7 +109,7 @@ Rails.prototype.left = function(length) {
 }
 
 Rails.prototype.right = function(length) {
-   if (this.headroom) {
+   if (this.headroomHeight) {
       this.drone.box(blocks.air, 1, headroomHeight, length);
    }
 
