@@ -4,12 +4,12 @@ function railride(length, count, baseblock) {
    }
 
    if (baseblock) {
-      for (i=0; i < count; i++) {
+      for (var i=0; i < count; i++) {
          fwd(2*i).left().down().box(baseblock, length+2, 1, 2);
       }
    }
 
-   for (i=0; i < count; i++) {
+   for (var i=0; i < count; i++) {
       fwd(2*i).box(blocks.powered_rail, length).fwd().box(blocks.torch_redstone, length);
    }
 }
@@ -20,8 +20,12 @@ function torchwall(length, depth, baseblock) {
 
 var headroomHeight = 3;
 
-function Rails() {
-   this.drone = new Drone(self);
+function Rails(startPoint) {
+   if (typeof startPoint === 'undefined') {
+      startPoint = self;
+   }
+
+   this.drone = new Drone(startPoint);
    this.baseblock = blocks.slab.upper.stonebrick;
    this.headroomHeight = headroomHeight;
 }
@@ -50,21 +54,21 @@ function railUpOrDown(railObject, isUp, length) {
        railObject.drone.down();
    }
 
-   for (i=0; i < length; i++) {
+   for (var i=0; i < length; i++) {
       if (railObject.headroomHeight) {
-		  railObject.drone.box(blocks.air, 1, headroomHeight);
-	  }
+        railObject.drone.box(blocks.air, 1, headroomHeight);
+      }
 
-	  railObject.drone.down().box(railObject.baseblock, 2);
-	  railObject.drone.up().box(blocks.powered_rail);
-	  railObject.drone.right().box(blocks.torch_redstone);
+      railObject.drone.down().box(railObject.baseblock, 2);
+      railObject.drone.up().box(blocks.powered_rail);
+      railObject.drone.right().box(blocks.torch_redstone);
 
       railObject.drone.left().fwd();
 
-	  if (isUp) {
-          railObject.drone.up();
+      if (isUp) {
+         railObject.drone.up();
       } else {
-          railObject.drone.down();
+         railObject.drone.down();
       }
    }
 
@@ -122,8 +126,8 @@ Rails.prototype.right = function(length) {
    return this;
 }
 
-function rails() {
-   return new Rails();
+function rails(startPoint) {
+   return new Rails(startPoint);
 }
 
 exports.rails = rails;
