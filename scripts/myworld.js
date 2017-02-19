@@ -20,6 +20,11 @@ function torchwall(length, depth, baseblock) {
 
 var headroomHeight = 3;
 
+var railWithTorchOnRight = [
+   blocks.powered_rail,
+   blocks.torch_redstone
+];
+
 function Rails(startPoint) {
    if (typeof startPoint === 'undefined') {
       startPoint = self;
@@ -35,9 +40,7 @@ Rails.prototype.fwd = function(length, baseblock) {
       this.baseblock = baseblock;
    }
 
-   if (this.headroomHeight) {
-      this.drone.box(blocks.air, 1, headroomHeight, length);
-   }
+   this.drone.box(blocks.air, 1, headroomHeight, length);
 
    this.drone.down().box(this.baseblock, 2, 1, length);
    this.drone.up().box(blocks.powered_rail, 1, 1, length);
@@ -48,35 +51,18 @@ Rails.prototype.fwd = function(length, baseblock) {
 }
 
 function railUpOrDown(railObject, isUp, length) {
-   if (isUp) {
-       railObject.drone.up();
-   } else {
-       railObject.drone.down();
-   }
-
    for (var i=0; i < length; i++) {
-      if (railObject.headroomHeight) {
-        railObject.drone.box(blocks.air, 1, headroomHeight);
-      }
-
-      railObject.drone.down().box(railObject.baseblock, 2);
-      railObject.drone.up().box(blocks.powered_rail);
-      railObject.drone.right().box(blocks.torch_redstone);
-
-      railObject.drone.left().fwd();
-
       if (isUp) {
          railObject.drone.up();
       } else {
          railObject.drone.down();
       }
-   }
 
-   // Gone up/down too far
-   if (isUp) {
-      railObject.drone.down();
-   } else {
-      railObject.drone.up();
+      railObject.drone.box(blocks.air, 1, headroomHeight);
+
+      railObject.drone.down().box(railObject.baseblock, 2);
+      railObject.drone.up().boxa(railWithTorchOnRight, 2);
+      railObject.drone.fwd();
    }
 }
 
@@ -99,9 +85,7 @@ Rails.prototype.down = function(length, baseblock) {
 }
 
 Rails.prototype.left = function(length) {
-   if (this.headroomHeight) {
-      this.drone.box(blocks.air, 1, headroomHeight, length);
-   }
+   this.drone.box(blocks.air, 1, headroomHeight, length);
 
    this.drone.down().box(this.baseblock).up().box(blocks.rail).turn(3).fwd();
 
@@ -113,9 +97,7 @@ Rails.prototype.left = function(length) {
 }
 
 Rails.prototype.right = function(length) {
-   if (this.headroomHeight) {
-      this.drone.box(blocks.air, 1, headroomHeight, length);
-   }
+   this.drone.box(blocks.air, 1, headroomHeight, length);
 
    this.drone.down().box(this.baseblock).up().box(blocks.rail).turn().fwd();
 
