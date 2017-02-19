@@ -1,0 +1,96 @@
+
+var headroomHeight = 3;
+
+var railWithTorchOnRight = [
+   blocks.powered_rail,
+   blocks.torch_redstone
+];
+
+function Rails(startPoint) {
+   if (typeof startPoint === 'undefined') {
+      startPoint = self;
+   }
+
+   this.drone = new Drone(startPoint);
+   this.baseblock = blocks.slab.upper.stonebrick;
+   this.headroomHeight = headroomHeight;
+}
+
+Rails.prototype.fwd = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
+   this.drone.box(blocks.air, 1, headroomHeight, length);
+
+   this.drone.down().box(this.baseblock, 2, 1, length);
+   this.drone.up().box(blocks.powered_rail, 1, 1, length);
+   this.drone.right().box(blocks.torch_redstone, 1, 1, length);
+
+   this.drone.fwd(length).left();
+   return this;
+}
+
+function railUpOrDown(railObject, isUp, length) {
+   for (var i=0; i < length; i++) {
+      if (isUp) {
+         railObject.drone.up();
+      } else {
+         railObject.drone.down();
+      }
+
+      railObject.drone.box(blocks.air, 1, headroomHeight);
+
+      railObject.drone.down().box(railObject.baseblock, 2);
+      railObject.drone.up().boxa(railWithTorchOnRight, 2);
+      railObject.drone.fwd();
+   }
+}
+
+Rails.prototype.up = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
+   railUpOrDown(this, true, length);
+   return this;
+}
+
+Rails.prototype.down = function(length, baseblock) {
+   if (typeof baseblock !== 'undefined') {
+      this.baseblock = baseblock;
+   }
+
+   railUpOrDown(this, false, length);
+   return this;
+}
+
+Rails.prototype.left = function(length) {
+   this.drone.box(blocks.air, 1, headroomHeight, length);
+
+   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn(3).fwd();
+
+   if (length) {
+      this.fwd(length);
+   }
+
+   return this;
+}
+
+Rails.prototype.right = function(length) {
+   this.drone.box(blocks.air, 1, headroomHeight, length);
+
+   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn().fwd();
+
+   if (length) {
+      this.fwd(length);
+   }
+
+   return this;
+}
+
+function rails(startPoint) {
+   return new Rails(startPoint);
+}
+
+exports.rails = rails;
