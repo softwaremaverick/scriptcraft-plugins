@@ -20,11 +20,14 @@ Rails.prototype.fwd = function(length, baseblock) {
       this.baseblock = baseblock;
    }
 
-   this.drone.box(blocks.air, 1, headroomHeight, length);
+   this.drone
+            .box(blocks.air, 1, headroomHeight, length)
+            .down()
+            .box(this.baseblock, 2, 1, length)
+            .up()
+            .boxa(railWithTorchOnRight, 2, 1, length)
+            .fwd(length);
 
-   this.drone.down().box(this.baseblock, 2, 1, length);
-   this.drone.up().boxa(railWithTorchOnRight, 2, 1, length);
-   this.drone.fwd(length);
    return this;
 }
 
@@ -36,11 +39,12 @@ function railUpOrDown(railObject, isUp, length) {
          railObject.drone.down();
       }
 
-      railObject.drone.box(blocks.air, 1, headroomHeight);
-
-      railObject.drone.down().box(railObject.baseblock, 2);
-      railObject.drone.up().boxa(railWithTorchOnRight, 2);
-      railObject.drone.fwd();
+      railObject.drone
+                     .box(blocks.air, 1, headroomHeight)
+                     .down()
+                     .box(railObject.baseblock, 2)
+                     .up().boxa(railWithTorchOnRight, 2)
+                     .fwd();
    }
 }
 
@@ -63,9 +67,14 @@ Rails.prototype.down = function(length, baseblock) {
 }
 
 Rails.prototype.left = function(length) {
-   this.drone.box(blocks.air, 1, headroomHeight, length);
-
-   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn(3).fwd();
+   this.drone
+            .box(blocks.air, 1, headroomHeight)
+            .down()
+            .box(this.baseblock)
+            .up()
+            .box(blocks.rail)
+            .turn(3)
+            .fwd();
 
    if (length) {
       this.fwd(length);
@@ -75,9 +84,14 @@ Rails.prototype.left = function(length) {
 }
 
 Rails.prototype.right = function(length) {
-   this.drone.box(blocks.air, 1, headroomHeight, length);
-
-   this.drone.down().box(this.baseblock).up().box(blocks.rail).turn().fwd();
+   this.drone
+            .box(blocks.air, 1, headroomHeight)
+            .down()
+            .box(this.baseblock)
+            .up()
+            .box(blocks.rail)
+            .turn()
+            .fwd();
 
    if (length) {
       this.fwd(length);
