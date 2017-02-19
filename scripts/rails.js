@@ -13,7 +13,6 @@ function Rails(startPoint) {
 
    this.drone = new Drone(startPoint);
    this.baseblock = blocks.slab.upper.stonebrick;
-   this.headroomHeight = headroomHeight;
 }
 
 Rails.prototype.fwd = function(length, baseblock) {
@@ -24,10 +23,8 @@ Rails.prototype.fwd = function(length, baseblock) {
    this.drone.box(blocks.air, 1, headroomHeight, length);
 
    this.drone.down().box(this.baseblock, 2, 1, length);
-   this.drone.up().box(blocks.powered_rail, 1, 1, length);
-   this.drone.right().box(blocks.torch_redstone, 1, 1, length);
-
-   this.drone.fwd(length).left();
+   this.drone.up().boxa(railWithTorchOnRight, 2, 1, length);
+   this.drone.fwd(length);
    return this;
 }
 
