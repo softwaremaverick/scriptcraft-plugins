@@ -18,6 +18,20 @@ function torchwall(length, depth, baseblock) {
    box0(baseblock, length, 1, depth).up().box0(blocks.torch, length, 1, depth);
 }
 
+function domeHouse(radius) {
+    var drone = new Drone( self );
+    drone.cylinder(blocks.oak, radius, 1)
+         .up()
+         .hemisphere0(blocks.glass, radius, 'north')
+         .fwd(radius + 2)
+         .down(2)
+         .turn()
+         .arc({blockType: 95, meta: 4, radius: 2, orientation: 'vertical', fill:false, quadrants:{topleft:true, topright:true, bottomleft:false, bottomright:false}})
+         .up(2)
+         .right()
+         .box(blocks.air, 3, 2);
+}
+
 function testrails() {
    var drone = new Drone( self );
 
@@ -41,3 +55,4 @@ function testrails() {
 exports.railride = railride;
 exports.testrails = testrails;
 exports.torchwall = torchwall;
+exports.domeHouse = domeHouse;
