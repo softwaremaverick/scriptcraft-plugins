@@ -6,6 +6,13 @@ var railWithTorchOnRight = [
    blocks.torch_redstone
 ];
 
+var railWithDetectorRail = [
+   blocks.detector_rail, 
+   blocks.powered_rail,
+   blocks.powered_rail,
+   blocks.powered_rail
+];
+
 function Rails(startPoint) {
    if (typeof startPoint === 'undefined') {
       startPoint = self;
@@ -13,6 +20,9 @@ function Rails(startPoint) {
 
    this.drone = new Drone(startPoint);
    this.baseblock = blocks.slab.upper.stonebrick;
+
+   this.railBlocks = railWithDetectorRail;
+   this.railBlockWidth = 1;
 }
 
 Rails.prototype.fwd = function(length, baseblock) {
@@ -23,9 +33,9 @@ Rails.prototype.fwd = function(length, baseblock) {
    this.drone
             .box(blocks.air, 1, headroomHeight, length)
             .down()
-            .box(this.baseblock, 2, 1, length)
+            .box(this.baseblock, this.railBlockWidth, 1, length)
             .up()
-            .boxa(railWithTorchOnRight, 2, 1, length)
+            .boxa(this.railBlocks, this.railBlockWidth, 1, length)
             .fwd(length);
 
    return this;
@@ -43,7 +53,8 @@ function railUpOrDown(railObject, isUp, length) {
                      .box(blocks.air, 1, headroomHeight)
                      .down()
                      .box(railObject.baseblock, 2)
-                     .up().boxa(railWithTorchOnRight, 2)
+                     .up()
+                     .boxa(railWithTorchOnRight, 2)
                      .fwd();
    }
 }
