@@ -83,19 +83,36 @@ function stairs(startPoint, width, height, depth) {
    }
 }
 
+var quadHouseEntranceWidth = 5;
+var quadHouseEntranceHeight = 6;
+
 function quadHouse() {
    var drone = new Drone( self );
 
-   drone.box0(blocks.stone, 5, 6, 5)
+   drone.box(blocks.stone, quadHouseEntranceWidth, 2, quadHouseEntranceWidth)
+        .up(2)
+        .box0(blocks.stone, quadHouseEntranceWidth, quadHouseEntranceHeight - 2, quadHouseEntranceWidth)
+        .up(quadHouseEntranceHeight - 2)
+        .left()
+        .back()
+        .box(blocks.stone, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2)
+        .up()
+        .box0(blocks.cobblestone_wall, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2);
+
+   drone.move('start')
         .up(2)
         .right(2)
-        .door();
+        .door()
+        .right()
+        .fwd()
+        .turn(2)
+        .ladder(quadHouseEntranceHeight - 1);
 
    // stairs
    drone.move('start')
         .back(2);
 
-   stairs(drone, 5, 2, 2);
+   stairs(drone, quadHouseEntranceWidth, 2, 2);
 }
 
 exports.railride = railride;
