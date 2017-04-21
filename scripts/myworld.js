@@ -52,7 +52,55 @@ function testrails() {
    }
 }
 
+function stairs(startPoint, width, height, depth) {
+   var drone = new Drone( startPoint );
+
+   if (width == 1) {
+      drone.box(blocks.stairs.stone);
+   }
+   else {
+      drone.fwd(depth - 1)
+           .turn()
+           .box(blocks.stairs.stone, depth)
+           .fwd(width - 1)
+           .turn(2)
+           .left(depth - 1)
+           .box(blocks.stairs.stone, depth);
+
+      if (width > 2) {
+         drone.move('start')
+              .right()
+              .box(blocks.stairs.stone, width-2)
+              .fwd()
+              .box(blocks.stone, width - 2, 1, depth - 1, 1);
+
+         if (height > 1 && depth > 1) {
+            drone.up();
+
+            stairs(drone, width - 2, height - 1, depth - 1);
+         }
+      }
+   }
+}
+
+function quadHouse() {
+   var drone = new Drone( self );
+
+   drone.box0(blocks.stone, 5, 6, 5)
+        .up(2)
+        .right(2)
+        .door();
+
+   // stairs
+   drone.move('start')
+        .back(2);
+
+   stairs(drone, 5, 2, 2);
+}
+
 exports.railride = railride;
 exports.testrails = testrails;
 exports.torchwall = torchwall;
 exports.domeHouse = domeHouse;
+exports.quadHouse = quadHouse;
+exports.stairs = stairs;
