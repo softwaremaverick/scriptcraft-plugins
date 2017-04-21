@@ -88,6 +88,8 @@ var quadHouseEntranceHeight = 6;
 
 function quadHouse() {
    var drone = new Drone( self );
+   
+   drone.chkpt('entranceSideStart');
 
    drone.box(blocks.stone, quadHouseEntranceWidth, 2, quadHouseEntranceWidth)
         .up(2)
@@ -99,17 +101,38 @@ function quadHouse() {
         .up()
         .box0(blocks.cobblestone_wall, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2);
 
-   drone.move('start')
-        .up(2)
+   drone.move('entranceSideStart')
+        .left(3)
+        .back(3)
+        .box0(blocks.air, quadHouseEntranceWidth + 6, quadHouseEntranceHeight, quadHouseEntranceWidth + 6)
+        .move('entranceSideStart');
+
+   for (var sideNumber = 1; sideNumber <= 4; sideNumber++) {
+      buildQuadHouseSide(drone, sideNumber);
+
+      if (sideNumber != 4) {
+         drone.move('entranceSideStart')
+              .fwd(quadHouseEntranceWidth - 1)
+              .turn()
+              .chkpt('entranceSideStart');
+      }
+   }
+}
+
+function buildQuadHouseSide(drone, sideNumber) {
+   drone.up(2)
         .right(2)
-        .door()
-        .right()
-        .fwd()
-        .turn(2)
-        .ladder(quadHouseEntranceHeight - 1);
+        .door();
+
+   if (sideNumber == 1) {
+      drone.right()
+           .fwd()
+           .turn(2)
+           .ladder(quadHouseEntranceHeight - 1);
+   }
 
    // stairs
-   drone.move('start')
+   drone.move('entranceSideStart')
         .back(2);
 
    stairs(drone, quadHouseEntranceWidth, 2, 2);
