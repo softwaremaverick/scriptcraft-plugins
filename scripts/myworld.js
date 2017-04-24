@@ -133,6 +133,14 @@ function woodenHouse(startPoint, width, height, depth) {
               .up()
               .right(Math.floor(width / 2))
               .door();
+
+    // external torches
+    houseDrone.up()
+              .back()
+              .left()
+              .hangtorch()
+              .right(2)
+              .hangtorch();
 }
 
 function buildQuadHouseSide(drone, sideNumber) {
