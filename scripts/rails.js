@@ -1,5 +1,5 @@
 
-var headroomHeight = 3;
+var headroomHeight = 2;
 
 var railWithTorchOnRight = [
    blocks.powered_rail,
@@ -50,7 +50,7 @@ function railUpOrDown(railObject, isUp, length) {
       }
 
       railObject.drone
-                     .box(blocks.air, 1, headroomHeight)
+                     .box(blocks.air, 1, headroomHeight + 1)
                      .down()
                      .box(railObject.baseblock, 2)
                      .up()
@@ -63,6 +63,14 @@ Rails.prototype.up = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
    }
+
+   // add extra head room before going up
+   this.drone
+       .up()
+       .back()
+       .box(blocks.air, 1, headroomHeight + 1)
+       .fwd()
+       .down();
 
    railUpOrDown(this, true, length);
    return this;
