@@ -119,6 +119,22 @@ function quadHouse() {
    }
 }
 
+function woodenHouse(startPoint, width, height, depth) {
+    var houseDrone = new Drone(startPoint);
+
+    houseDrone.box(blocks.wood, width, 1, depth)
+              .up()
+              .box0(blocks.oak, width, height - 2, depth)
+              .up(height - 2)
+              .box(blocks.wood, width, 1, depth);
+
+    // door
+    houseDrone.move("start")
+              .up()
+              .right(Math.floor(width / 2))
+              .door();
+}
+
 function buildQuadHouseSide(drone, sideNumber) {
    drone.up(2)
         .right(2)
@@ -148,6 +164,11 @@ function buildQuadHouseSide(drone, sideNumber) {
         .fwd()
         .box(blocks.spruce, 3);
 
+   // wooden house
+   drone.left(4);
+
+   woodenHouse(drone, 11, 6, 11);
+
    // ground stairs
    drone.move('entranceSideStart')
         .back(2);
@@ -160,4 +181,5 @@ exports.testrails = testrails;
 exports.torchwall = torchwall;
 exports.domeHouse = domeHouse;
 exports.quadHouse = quadHouse;
+exports.woodenHouse = woodenHouse;
 exports.stairs = stairs;
