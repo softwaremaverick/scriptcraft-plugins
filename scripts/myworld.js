@@ -119,50 +119,56 @@ function quadHouse() {
    }
 }
 
-function woodenHouse(startPoint, width, height, depth) {
-    var houseDrone = new Drone(startPoint);
+function torchLitDoor(drone) {
+    drone.chkpt('torchDoor')
+         .door()
+         .up()
+         .back()
+         .left()
+         .hangtorch()
+         .right(2)
+         .hangtorch()
+         .move('torchDoor');
+}
 
-    houseDrone.box(blocks.wood, width, 1, depth)
-              .up()
-              .box0(blocks.oak, width, height - 2, depth)
-              .up(height - 2)
-              .box(blocks.wood, width, 1, depth);
+function woodenHouse(startPoint, width, height, depth) {
+    var drone = new Drone(startPoint);
+
+    drone.box(blocks.wood, width, 1, depth)
+         .up()
+         .box0(blocks.oak, width, height - 2, depth)
+         .up(height - 2)
+         .box(blocks.wood, width, 1, depth);
 
     // door
-    houseDrone.move("start")
-              .up()
-              .right(Math.floor(width / 2))
-              .door();
+    drone.move("start")
+         .up()
+         .right(Math.floor(width / 2));
 
-    // external torches
-    houseDrone.up()
-              .back()
-              .left()
-              .hangtorch()
-              .right(2)
-              .hangtorch();
+    torchLitDoor(drone);
 
     // internal torches
-    houseDrone.move("start")
-              .up(height - 2)
-              .fwd()
-              .right()
-              .turn(3)
-              .hangtorch()
-              .right(depth - 3)
-              .hangtorch();
+    drone.move("start")
+         .up(height - 2)
+         .fwd()
+         .right()
+         .turn(3)
+         .hangtorch()
+         .right(depth - 3)
+         .hangtorch();
 
-    houseDrone.back(width - 3)
-              .turn(2)
-              .hangtorch()
-              .right(depth - 3)
-              .hangtorch();
+    drone.back(width - 3)
+         .turn(2)
+         .hangtorch()
+         .right(depth - 3)
+         .hangtorch();
 }
 
 function buildQuadHouseSide(drone, sideNumber) {
    drone.up(2)
-        .right(2)
-        .door();
+        .right(2);
+
+   torchLitDoor(drone);
 
    if (sideNumber == 1) {
       drone.right()
