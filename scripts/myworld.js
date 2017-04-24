@@ -141,6 +141,22 @@ function woodenHouse(startPoint, width, height, depth) {
               .hangtorch()
               .right(2)
               .hangtorch();
+
+    // internal torches
+    houseDrone.move("start")
+              .up(height - 2)
+              .fwd()
+              .right()
+              .turn(3)
+              .hangtorch()
+              .right(depth - 3)
+              .hangtorch();
+
+    houseDrone.back(width - 3)
+              .turn(2)
+              .hangtorch()
+              .right(depth - 3)
+              .hangtorch();
 }
 
 function buildQuadHouseSide(drone, sideNumber) {
