@@ -88,7 +88,7 @@ var quadHouseEntranceHeight = 6;
 
 function quadHouse() {
    var drone = new Drone( self );
-   
+
    drone.chkpt('entranceSideStart');
 
    drone.box(blocks.stone, quadHouseEntranceWidth, 2, quadHouseEntranceWidth)
@@ -100,6 +100,16 @@ function quadHouse() {
         .box(blocks.stone, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2)
         .up()
         .box0(blocks.cobblestone_wall, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2);
+
+   // add torches to cobblestone wall
+   drone.up()
+        .box(blocks.torch)
+        .right(quadHouseEntranceWidth + 1)
+        .box(blocks.torch)
+        .fwd(quadHouseEntranceWidth + 1)
+        .box(blocks.torch)
+        .left(quadHouseEntranceWidth + 1)
+        .box(blocks.torch);
 
    drone.move('entranceSideStart')
         .left(3)
