@@ -131,7 +131,24 @@ function buildQuadHouseSide(drone, sideNumber) {
            .ladder(quadHouseEntranceHeight - 1);
    }
 
-   // stairs
+   // upper stairs
+   drone.move('entranceSideStart')
+        .right(3)
+        .back()
+        .up(quadHouseEntranceHeight + 1)
+        .turn(2);
+
+   for (var i=0; i < 2; i++) {
+        drone.box(blocks.stairs.spruce, 3)
+             .up()
+             .fwd();
+   }
+
+   drone.box(blocks.stairs.spruce, 3)
+        .fwd()
+        .box(blocks.spruce, 3);
+
+   // ground stairs
    drone.move('entranceSideStart')
         .back(2);
 
