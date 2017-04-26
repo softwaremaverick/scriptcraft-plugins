@@ -86,47 +86,101 @@ function stairs(startPoint, width, height, depth) {
 var quadHouseEntranceWidth = 5;
 var quadHouseEntranceHeight = 6;
 
-function quadHouse() {
+function watchTower(startptr, width, height) {
+   buildWatchTower(startptr, width, height, buildTowerSide);
+}
+
+function buildWatchTower(startptr, width, height, buildSideCallback) {
    var drone = new Drone( self );
 
    drone.chkpt('entranceSideStart');
 
-   drone.box(blocks.stone, quadHouseEntranceWidth, 2, quadHouseEntranceWidth)
+   drone.box(blocks.stone, width, 2, width)
         .up(2)
-        .box0(blocks.stone, quadHouseEntranceWidth, quadHouseEntranceHeight - 2, quadHouseEntranceWidth)
-        .up(quadHouseEntranceHeight - 2)
+        .box0(blocks.stone, width, height - 2, width)
+        .up(height - 2)
         .left()
         .back()
-        .box(blocks.stone, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2)
+        .box(blocks.stone, width + 2, 1, width + 2)
         .up()
-        .box0(blocks.cobblestone_wall, quadHouseEntranceWidth + 2, 1, quadHouseEntranceWidth + 2);
+        .box0(blocks.cobblestone_wall, width + 2, 1, width + 2);
 
    // add torches to cobblestone wall
    drone.up()
         .box(blocks.torch)
-        .right(quadHouseEntranceWidth + 1)
+        .right(width + 1)
         .box(blocks.torch)
-        .fwd(quadHouseEntranceWidth + 1)
+        .fwd(width + 1)
         .box(blocks.torch)
-        .left(quadHouseEntranceWidth + 1)
+        .left(width + 1)
         .box(blocks.torch);
 
    drone.move('entranceSideStart')
         .left(3)
         .back(3)
-        .box0(blocks.air, quadHouseEntranceWidth + 6, quadHouseEntranceHeight, quadHouseEntranceWidth + 6)
+        .box0(blocks.air, width + 6, height, width + 6)
         .move('entranceSideStart');
 
    for (var sideNumber = 1; sideNumber <= 4; sideNumber++) {
-      buildQuadHouseSide(drone, sideNumber);
+      buildSideCallback(drone, sideNumber, width, height);
 
       if (sideNumber != 4) {
          drone.move('entranceSideStart')
-              .fwd(quadHouseEntranceWidth - 1)
+              .fwd(width - 1)
               .turn()
               .chkpt('entranceSideStart');
       }
    }
+}
+
+function buildTowerSide(drone, sideNumber, width, height) {
+   drone.up(2)
+        .right(Math.floor(width / 2));
+
+   torchLitDoor(drone);
+
+   if (sideNumber == 1) {
+      drone.right()
+           .fwd()
+           .turn(2)
+           .ladder(height - 1);
+   }
+
+   // ground stairs
+   drone.move('entranceSideStart')
+        .back(2);
+
+   stairs(drone, width, 2, 2);
+}
+
+function quadHouse() {
+   buildWatchTower( self, quadHouseEntranceWidth, quadHouseEntranceHeight, buildQuadHouseSide );
+}
+
+function buildQuadHouseSide(drone, sideNumber) {
+   buildTowerSide(drone, sideNumber, quadHouseEntranceWidth, quadHouseEntranceHeight);
+
+   // upper stairs
+   drone.move('entranceSideStart')
+        .right(3)
+        .back()
+        .up(quadHouseEntranceHeight + 1)
+        .turn(2);
+
+   for (var i=0; i < 2; i++) {
+        drone.box(blocks.stairs.spruce, 3)
+             .up()
+             .fwd();
+   }
+
+   drone.box(blocks.stairs.spruce, 3)
+        .fwd()
+        .box(blocks.spruce, 3);
+
+   // wooden house
+   drone.left(4);
+
+   woodenHouse(drone, 11, 6, 11);
 }
 
 function torchLitDoor(drone) {
@@ -174,52 +228,11 @@ function woodenHouse(startPoint, width, height, depth) {
          .hangtorch();
 }
 
-function buildQuadHouseSide(drone, sideNumber) {
-   drone.up(2)
-        .right(2);
-
-   torchLitDoor(drone);
-
-   if (sideNumber == 1) {
-      drone.right()
-           .fwd()
-           .turn(2)
-           .ladder(quadHouseEntranceHeight - 1);
-   }
-
-   // upper stairs
-   drone.move('entranceSideStart')
-        .right(3)
-        .back()
-        .up(quadHouseEntranceHeight + 1)
-        .turn(2);
-
-   for (var i=0; i < 2; i++) {
-        drone.box(blocks.stairs.spruce, 3)
-             .up()
-             .fwd();
-   }
-
-   drone.box(blocks.stairs.spruce, 3)
-        .fwd()
-        .box(blocks.spruce, 3);
-
-   // wooden house
-   drone.left(4);
-
-   woodenHouse(drone, 11, 6, 11);
-
-   // ground stairs
-   drone.move('entranceSideStart')
-        .back(2);
-
-   stairs(drone, quadHouseEntranceWidth, 2, 2);
-}
-
 exports.railride = railride;
 exports.testrails = testrails;
 exports.torchwall = torchwall;
 exports.domeHouse = domeHouse;
 exports.quadHouse = quadHouse;
 exports.woodenHouse = woodenHouse;
+exports.watchTower = watchTower;
 exports.stairs = stairs;
