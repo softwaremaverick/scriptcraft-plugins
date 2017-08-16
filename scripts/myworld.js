@@ -20,12 +20,13 @@ function torchwall(length, depth, baseblock) {
 
 function domeHouse(radius) {
     var drone = new Drone( self );
-    drone.cylinder(blocks.oak, radius, 1)
+    drone.left(radius)
+         .cylinder(blocks.oak, radius, 1)
          .up()
          .hemisphere0(blocks.glass, radius, 'north')
-         .fwd(radius + 2)
-         .down(2)
-         .turn()
+         .move('start')
+         .left(2)
+         .down()
          .arc({blockType: 95, meta: 4, radius: 2, orientation: 'vertical', fill:false, quadrants:{topleft:true, topright:true, bottomleft:false, bottomright:false}})
          .up(2)
          .right()
