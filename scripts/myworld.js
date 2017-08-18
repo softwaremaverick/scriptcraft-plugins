@@ -87,12 +87,16 @@ function stairs(startPoint, width, height, depth) {
 var quadHouseEntranceWidth = 5;
 var quadHouseEntranceHeight = 6;
 
-function watchTower(startptr, width, height) {
-   buildWatchTower(startptr, width, height, buildTowerSide);
+function watchTower(width, height) {
+   buildWatchTower(self, width, height, buildTowerSide);
 }
 
 function buildWatchTower(startptr, width, height, buildSideCallback) {
    var drone = new Drone( self );
+
+   // move the drone so that the start pointer is the middle of the end structure
+   drone.fwd(2)
+        .left(Math.floor(width / 2));
 
    drone.chkpt('entranceSideStart');
 
