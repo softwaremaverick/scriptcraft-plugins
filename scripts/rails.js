@@ -8,8 +8,6 @@ var railWithTorchOnRight = [
 
 var railWithDetectorRail = [
    blocks.detector_rail, 
-   blocks.powered_rail,
-   blocks.powered_rail,
    blocks.powered_rail
 ];
 
