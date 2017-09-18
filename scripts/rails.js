@@ -29,6 +29,9 @@ Rails.prototype.fwd = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
    }
+   if (typeof length == 'undefined') {
+      length = 1;
+   }
 
    this.drone
             .box(blocks.air, 1, headroomHeight, length)
@@ -63,6 +66,9 @@ Rails.prototype.up = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
    }
+   if (typeof length == 'undefined') {
+      length = 1;
+   }
 
    // add extra head room before going up
    this.drone
@@ -79,6 +85,9 @@ Rails.prototype.up = function(length, baseblock) {
 Rails.prototype.down = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
+   }
+   if (typeof length == 'undefined') {
+      length = 1;
    }
 
    railUpOrDown(this, false, length);
