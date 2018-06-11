@@ -19,6 +19,12 @@ var railWithDetectorRail = {
    width: 1
 };
 
+var unpoweredRail = {
+   blocks: [ blocks.rail ],
+   railOffset: 0,
+   width: 1
+};
+
 function Rails(startPoint) {
    if (typeof startPoint === 'undefined') {
       startPoint = self;
@@ -64,7 +70,7 @@ function railUpOrDown(railObject, isUp, length) {
                      .left(railObject.upDownRailBlocks.railOffset)
                      .box(blocks.air, 1, headroomHeight + 1)
                      .down()
-                     .box(railObject.baseblock, 2)
+                     .box(railObject.baseblock, railObject.upDownRailBlocks.width)
                      .up()
                      .boxa(railObject.upDownRailBlocks.blocks, railObject.upDownRailBlocks.width)
                      .fwd()
