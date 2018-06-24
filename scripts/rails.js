@@ -37,6 +37,32 @@ function Rails(startPoint) {
    this.upDownRailBlocks = railWithTorchOnRight;
 }
 
+Rails.prototype.powerMode = function(powerMode) {
+   switch (powerMode) {
+      case 0:
+            this.railBlocks = unpoweredRail;
+            this.upDownRailBlocks = unpoweredRail;
+            break;
+
+      case 1:
+            this.railBlocks = railWithDetectorRail;
+            this.upDownRailBlocks = railWithDetectorRail;
+            break;
+
+      case 2:
+            this.railBlocks = railWithTorchOnLeft;
+            this.upDownRailBlocks = railWithTorchOnLeft;
+            break;
+
+      case 3:
+            this.railBlocks = railWithTorchOnRight;
+            this.upDownRailBlocks = railWithTorchOnRight;
+            break;
+   }
+
+   return this;
+};
+
 Rails.prototype.fwd = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
@@ -56,7 +82,7 @@ Rails.prototype.fwd = function(length, baseblock) {
             .right(this.railBlocks.railOffset);
 
    return this;
-}
+};
 
 function railUpOrDown(railObject, isUp, length) {
    for (var i=0; i < length; i++) {
@@ -108,7 +134,7 @@ Rails.prototype.down = function(length, baseblock) {
 
    railUpOrDown(this, false, length);
    return this;
-}
+};
 
 Rails.prototype.left = function(length) {
    this.drone
@@ -125,7 +151,7 @@ Rails.prototype.left = function(length) {
    }
 
    return this;
-}
+};
 
 Rails.prototype.right = function(length) {
    this.drone
@@ -142,7 +168,7 @@ Rails.prototype.right = function(length) {
    }
 
    return this;
-}
+};
 
 function rails(startPoint) {
    return new Rails(startPoint);
