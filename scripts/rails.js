@@ -73,7 +73,7 @@ Rails.prototype.fwd = function(length, baseblock) {
 
    this.drone
             .left(this.railBlocks.railOffset)
-            .box(blocks.air, 1, headroomHeight, length)
+            .box(blocks.air, this.railBlocks.width, headroomHeight, length)
             .down()
             .box(this.baseblock, this.railBlocks.width, 1, length)
             .up()
@@ -94,7 +94,7 @@ function railUpOrDown(railObject, isUp, length) {
 
       railObject.drone
                      .left(railObject.upDownRailBlocks.railOffset)
-                     .box(blocks.air, 1, headroomHeight + 1)
+                     .box(blocks.air, railObject.upDownRailBlocks.width, headroomHeight + 1)
                      .down()
                      .box(railObject.baseblock, railObject.upDownRailBlocks.width)
                      .up()
