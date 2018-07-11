@@ -35,6 +35,8 @@ function Rails(startPoint) {
 
    this.railBlocks = railWithDetectorRail;
    this.upDownRailBlocks = railWithTorchOnRight;
+
+   this.isFirstRail = true;
 }
 
 Rails.prototype.powerMode = function(powerMode) {
@@ -71,6 +73,10 @@ Rails.prototype.fwd = function(length, baseblock) {
       length = 1;
    }
 
+   if (!this.isFirstRail) {
+       this.drone.fwd();
+   }
+
    this.drone
             .left(this.railBlocks.railOffset)
             .box(blocks.air, this.railBlocks.width, headroomHeight, length)
@@ -78,13 +84,18 @@ Rails.prototype.fwd = function(length, baseblock) {
             .box(this.baseblock, this.railBlocks.width, 1, length)
             .up()
             .boxa(this.railBlocks.blocks, this.railBlocks.width, 1, length)
-            .fwd(length)
+            .fwd(length - 1)
             .right(this.railBlocks.railOffset);
 
+   this.isFirstRail = false;
    return this;
 };
 
 function railUpOrDown(railObject, isUp, length) {
+   if (typeof length == 'undefined') {
+      length = 1;
+   }
+
    for (var i=0; i < length; i++) {
       if (isUp) {
          railObject.drone.up();
@@ -102,14 +113,17 @@ function railUpOrDown(railObject, isUp, length) {
                      .fwd()
                      .right(railObject.upDownRailBlocks.railOffset)
    }
+
+   railObject.drone.back();
 }
 
 Rails.prototype.up = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
    }
-   if (typeof length == 'undefined') {
-      length = 1;
+
+   if (!this.isFirstRail) {
+       this.drone.fwd();
    }
 
    // add extra head room before going up
@@ -121,6 +135,7 @@ Rails.prototype.up = function(length, baseblock) {
        .down();
 
    railUpOrDown(this, true, length);
+   this.isFirstRail = false;
    return this;
 }
 
@@ -128,45 +143,43 @@ Rails.prototype.down = function(length, baseblock) {
    if (typeof baseblock !== 'undefined') {
       this.baseblock = baseblock;
    }
-   if (typeof length == 'undefined') {
-      length = 1;
+
+   if (!this.isFirstRail) {
+       this.drone.fwd();
    }
 
    railUpOrDown(this, false, length);
+   this.isFirstRail = false;
    return this;
 };
 
-Rails.prototype.left = function(length) {
+Rails.prototype.turnLeft = function(length) {
    this.drone
-            .box(blocks.air, 1, headroomHeight)
-            .down()
-            .box(this.baseblock)
-            .up()
-            .box(blocks.rail)
-            .turn(3)
-            .fwd();
-
-   if (length) {
-      this.fwd(length);
-   }
+      .turn(3);
 
    return this;
 };
 
-Rails.prototype.right = function(length) {
+Rails.prototype.left = function(length, baseblock) {
+   this.turnLeft()
+      .fwd(length, baseBlock);
+
+   this.isFirstRail = false;
+   return this;
+};
+
+Rails.prototype.turnRight = function(length) {
    this.drone
-            .box(blocks.air, 1, headroomHeight)
-            .down()
-            .box(this.baseblock)
-            .up()
-            .box(blocks.rail)
-            .turn()
-            .fwd();
+      .turn();
 
-   if (length) {
-      this.fwd(length);
-   }
+   return this;
+};
 
+Rails.prototype.right = function(length, baseblock) {
+   this.turnRight()
+      .fwd(length, baseBlock);
+
+   this.isFirstRail = false;
    return this;
 };
 
