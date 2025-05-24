@@ -1,3 +1,6 @@
+var Drone = require('drone'),
+    blocks = require('blocks');
+
 function railride(length, count, baseblock) {
    if (!count) {
       count = 1;
@@ -233,11 +236,11 @@ function woodenHouse(startPoint, width, height, depth) {
          .hangtorch();
 }
 
-exports.railride = railride;
-exports.testrails = testrails;
-exports.torchwall = torchwall;
-exports.domeHouse = domeHouse;
-exports.quadHouse = quadHouse;
-exports.woodenHouse = woodenHouse;
-exports.watchTower = watchTower;
-exports.stairs = stairs;
+Drone.extend( railride );
+Drone.extend( testrails );
+Drone.extend( torchwall );
+Drone.extend( domeHouse );
+Drone.extend( quadHouse );
+Drone.extend( woodenHouse );
+Drone.extend( watchTower );
+Drone.extend( stairs );

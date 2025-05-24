@@ -1,3 +1,5 @@
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 var headroomHeight = 2;
 
@@ -206,4 +208,4 @@ function rails(startPoint) {
    return new Rails(startPoint);
 }
 
-exports.rails = rails;
+Drone.extend( rails );

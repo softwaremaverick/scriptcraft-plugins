@@ -1,3 +1,5 @@
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 function twistyrail(width, height) {
     var drone = new Drone( self );
@@ -33,5 +35,5 @@ function funtower(width, height) {
     }
 }
 
-exports.twistyrail = twistyrail;
-exports.funtower = funtower;
+Drone.extend( twistyrail );
+Drone.extend( funtower );
