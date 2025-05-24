@@ -1,0 +1,14 @@
+services:
+  minecraft-server:
+    build:
+      context: .
+      args:
+        - SCRIPTCRAFT_VERSION=3.3.0
+        - MINECRAFT_VERSION=1.12.2
+        - JAVA_VERSION=8
+    environment:
+      - OPS=SoftwareMaverick
+      - MINECRAFT_VERSION=1.12.2
+
+    ports:
+      - "25565:25565"

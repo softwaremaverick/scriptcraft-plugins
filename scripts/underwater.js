@@ -1,3 +1,5 @@
+var Drone = require('drone'),
+    blocks = require('blocks');
 
 function underwaterBox(width, depth) {
     var drone = new Drone( self );
@@ -16,5 +18,5 @@ function underwaterGlassTunnel(width, depth, distance) {
          .fwd().right().box(blocks.air, width-2, depth - 2, distance - 2);
 }
 
-exports.underwaterBox = underwaterBox;
-exports.underwaterGlassTunnel = underwaterGlassTunnel;
+Drone.extend( underwaterBox );
+Drone.extend( underwaterGlassTunnel );
