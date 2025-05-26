@@ -1,0 +1,20 @@
+volumes:
+  minecraft:
+
+services:
+  minecraft-server:
+    build:
+      context: .
+      args:
+        - SCRIPTCRAFT_VERSION=3.2.1
+        - MINECRAFT_VERSION=1.12.2
+        - JAVA_VERSION=8
+    environment:
+      - MINECRAFT_VERSION=1.12.2
+
+    volumes:
+      - ./scripts:/minecraft/scriptcraft/plugins/myworld
+      - minecraft:/minecraft
+
+    ports:
+      - "25565:25565"
