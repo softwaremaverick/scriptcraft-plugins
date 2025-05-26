@@ -6,7 +6,8 @@ services:
     build:
       context: .
       args:
-        - SCRIPTCRAFT_VERSION=3.2.1
+        - SCRIPTCRAFT_REPO_OWNER=softwaremaverick
+        - SCRIPTCRAFT_VERSION=3.2.1.1
         - MINECRAFT_VERSION=1.12.2
         - JAVA_VERSION=8
     environment:
