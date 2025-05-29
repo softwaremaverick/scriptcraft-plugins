@@ -10,3 +10,5 @@ RUN java -jar BuildTools.jar --rev $MINECRAFT_VERSION --compile craftbukkit
 ARG SCRIPTCRAFT_REPO_OWNER=walterhiggins
 ARG SCRIPTCRAFT_VERSION=3.4.0
 ADD https://github.com/$SCRIPTCRAFT_REPO_OWNER/ScriptCraft/releases/download/$SCRIPTCRAFT_VERSION/scriptcraft.jar /opt/minecraft/plugins/scriptcraft.jar
+
+COPY scripts /opt/minecraft/scriptcraft/plugins/myworld
